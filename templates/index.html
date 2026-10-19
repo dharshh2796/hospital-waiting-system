@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareQueue | Hospital Patient Waiting System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">+</div>
+    <div>
+      <h1>CareQueue</h1>
+      <p>Hospital Patient Waiting System</p>
+    </div>
+    <span class="demo-pill">DSA PROJECT</span>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">QUEUE MANAGEMENT DASHBOARD</p>
+        <h2>Every patient, in the right order.</h2>
+        <p class="subtext">A simple FIFO queue for registering patients and managing the waiting room.</p>
+      </div>
+      <div class="fifo-card">
+        <span class="fifo-icon">↗</span>
+        <div><strong>FIFO</strong><small>First In, First Out</small></div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <article class="stat-card"><span>Waiting</span><strong id="waitingCount">0</strong><small>In the queue</small></article>
+      <article class="stat-card"><span>In consultation</span><strong id="consultCount">0</strong><small>Currently being seen</small></article>
+      <article class="stat-card"><span>Completed</span><strong id="completedCount">0</strong><small>Visits finished</small></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel registration">
+        <div class="panel-heading">
+          <div><p class="eyebrow">NEW ENTRY</p><h3>Register a patient</h3></div>
+          <span class="heading-icon">＋</span>
+        </div>
+        <form id="patientForm">
+          <label for="name">Patient name</label>
+          <input id="name" name="name" maxlength="80" placeholder="Enter full name" required>
+          <div class="form-row">
+            <div>
+              <label for="age">Age</label>
+              <input id="age" name="age" type="number" min="1" max="120" placeholder="Age" required>
+            </div>
+            <div>
+              <label for="department">Department</label>
+              <select id="department" name="department" required>
+                <option value="">Select department</option>
+                <option>General Medicine</option>
+                <option>Paediatrics</option>
+                <option>Cardiology</option>
+                <option>Orthopaedics</option>
+                <option>Dermatology</option>
+                <option>ENT</option>
+                <option>Dental</option>
+              </select>
+            </div>
+          </div>
+          <label for="reason">Reason for visit</label>
+          <input id="reason" name="reason" maxlength="160" placeholder="Brief, non-sensitive description" required>
+          <button class="primary-button full-width" type="submit">Add to waiting queue <span>→</span></button>
+          <p class="form-note">For demonstration only. Use fictional patient details.</p>
+        </form>
+      </article>
+
+      <article class="panel queue-panel">
+        <div class="queue-header">
+          <div><p class="eyebrow">LIVE QUEUE</p><h3>Patient waiting list</h3></div>
+          <button id="refreshButton" class="icon-button" title="Refresh list" aria-label="Refresh list">↻</button>
+        </div>
+        <div class="next-patient">
+          <div><span class="next-label">NEXT IN LINE</span><strong id="nextPatient">No patients waiting</strong><small id="nextDetails">Register a patient to begin.</small></div>
+          <button id="callNextButton" class="primary-button">Call next patient <span>→</span></button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Token</th><th>Patient</th><th>Department</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="patientRows"><tr><td colspan="5" class="empty-state">Loading queue…</td></tr></tbody>
+          </table>
+        </div>
+        <p class="queue-footnote"><span class="green-dot"></span> Patients are called in token-number order.</p>
+      </article>
+    </section>
+
+    <section class="dsa-note">
+      <div class="dsa-symbol">⌘</div>
+      <div><strong>Where DSA is used</strong><p>The queue follows FIFO. A newly registered patient joins the end of the line, and “Call next patient” selects the earliest waiting token. SQLite stores the records so the list remains available after restarting the app.</p></div>
+    </section>
+    <footer>CareQueue · Student demonstration project · Not for real clinical use</footer>
+  </main>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
